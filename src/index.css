@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --page: 0 0 0;
+  --text: 255 255 255;
+  --card: 16 16 16;
+  --border: 32 32 32;
+  --surface: 8 8 8;
+  --panel: 21 20 26;
+  --input: 11 11 11;
+  --accent: 137 44 220;
+  --accent-soft: 188 111 241;
+  --accent-blue: 71 181 255;
+  --accent-light: 165 129 239;
+}
+
+html.theme-light {
+  --page: 245 247 251;
+  --text: 17 24 39;
+  --card: 255 255 255;
+  --border: 226 232 240;
+  --surface: 255 255 255;
+  --panel: 255 255 255;
+  --input: 243 244 246;
+  --accent: 124 58 237;
+  --accent-soft: 139 92 246;
+  --accent-blue: 37 99 235;
+  --accent-light: 139 92 246;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: rgb(var(--page));
+  color: rgb(var(--text));
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+img {
+  user-select: none;
+}
+
+.theme-icon {
+  transition: filter 300ms ease;
+}
+
+html.theme-light .theme-icon {
+  filter: brightness(0) saturate(100%);
+}
+
+html.theme-light .invert-on-light {
+  filter: brightness(0) saturate(100%);
+}
+
+html.theme-light .bullet-dot {
+  border-color: rgb(var(--text));
+  background-color: rgb(var(--text));
+  box-shadow: none;
+}
+
+html.theme-light .group:hover .bullet-dot {
+  border-color: rgb(var(--accent));
+  background-color: rgb(var(--accent));
+  box-shadow: 0 0 10px rgba(137, 44, 220, 0.7);
+}
+
+html.theme-light .bullet-dot[data-active="true"] {
+  border-color: rgb(var(--accent-soft));
+  background-color: rgb(var(--accent-soft));
+  box-shadow: 0 0 10px rgba(188, 111, 241, 0.7);
+}
+
+html.theme-light .group:hover .bullet-dot[data-active="true"] {
+  border-color: rgb(var(--accent-soft));
+  background-color: rgb(var(--accent-soft));
+  box-shadow: 0 0 10px rgba(188, 111, 241, 0.7);
+}
+
+html.theme-light .nav-link:hover {
+  text-decoration-color: #420462 !important;
+}
+
+
+::-webkit-scrollbar {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0b0b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #202020;
+  border-radius: 999px;
+}
+/* Theme-aware overrides for existing Tailwind text utilities */
+.text-white {
+  color: rgb(var(--text)) !important;
+}
+
+.text-white\/80 {
+  color: rgb(var(--text) / 0.8) !important;
+}
+
+.text-white\/60 {
+  color: rgb(var(--text) / 0.6) !important;
+}
