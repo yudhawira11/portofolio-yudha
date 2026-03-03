@@ -213,7 +213,7 @@ export default function App() {
             </p>
           </div>
           <h1 className="text-[40px] font-bold text-white max-[650px]:text-[28px]">
-            Web Developer
+            Web Developer ABAL ABAL
           </h1>
           <p className="text-[15px] leading-relaxed text-white max-[650px]:text-[14px]">
             Saya berkomitmen untuk terus belajar dan mengembangkan kemampuan
