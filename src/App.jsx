@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import PixelCard from "./components/PixelCard.jsx";
+import TextType from "./components/TextType.jsx";
 import frame41 from "./assets/frame-41.svg";
 import korsaImage from "./assets/projects/korsa remove bg 1.png";
 import project11 from "./assets/projects/1 1.png";
@@ -74,15 +75,60 @@ const categoryLabels = {
 };
 
 const projects = [
-  { id: "web-1", src: project11, category: "web" },
-  { id: "web-2", src: project12, category: "web" },
-  { id: "web-3", src: project13, category: "web" },
-  { id: "web-4", src: project11Alt, category: "web" },
-  { id: "web-5", src: project12Alt, category: "web" },
-  { id: "uiux-1", src: project13Alt, category: "uiux" },
-  { id: "uiux-2", src: project11Alt2, category: "uiux" },
-  { id: "seo-1", src: project12Alt2, category: "seo" },
-  { id: "seo-2", src: project13Alt2, category: "seo" },
+  {
+    id: "web-1",
+    src: project11,
+    category: "web",
+    link: "https://github.com/yudhawira11/belajar-laravel-react-tailwind_Peminjaman-Buku.git",
+  },
+  {
+    id: "web-2",
+    src: project12,
+    category: "web",
+    link: "https://github.com/yudhawira11/belajar-laravel-react-tailwind_Pemesanan-tiket-bioskop.git",
+  },
+  {
+    id: "web-3",
+    src: project13,
+    category: "web",
+    link: "https://github.com/yudhawira11/projek-selekta.git",
+  },
+  {
+    id: "web-4",
+    src: project11Alt,
+    category: "web",
+    link: "https://iseedigitalmarketing.com/",
+  },
+  {
+    id: "web-5",
+    src: project12Alt,
+    category: "web",
+    link: project12Alt,
+  },
+  {
+    id: "uiux-1",
+    src: project13Alt,
+    category: "uiux",
+    link: "https://www.figma.com/proto/gF29eXcR2qpMYu9ja5THtc/Projek-SoilSense?node-id=110-428&p=f&m=dev&scaling=contain&content-scaling=responsive&page-id=0%3A1&starting-point-node-id=110%3A129&t=IzPNhYRNUpwJZQUK-1",
+  },
+  {
+    id: "uiux-2",
+    src: project11Alt2,
+    category: "uiux",
+    link: "https://www.figma.com/proto/GdcZAyrr2lsadODO3EE0w5/Isee-Digital-Marketing?t=ODb1nOCFAQ5IS0B0-1&scaling=contain&content-scaling=responsive&page-id=0%3A1&node-id=26-3&starting-point-node-id=26%3A3",
+  },
+  {
+    id: "seo-1",
+    src: project12Alt2,
+    category: "seo",
+    link: "https://iseedigitalmarketing.com/konsultan-digital-marketing-untuk-strategi-bisnis-terukur/",
+  },
+  {
+    id: "seo-2",
+    src: project13Alt2,
+    category: "seo",
+    link: "https://iseedigitalmarketing.com/narasumber-digital-marketing-profesional-untuk-bisnis-modern/",
+  },
 ];
 
 export default function App() {
@@ -92,6 +138,7 @@ export default function App() {
   const skillRef = useRef(null);
   const projectRef = useRef(null);
   const contactRef = useRef(null);
+  const headerRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
     const stored = window.localStorage.getItem("theme");
@@ -147,6 +194,18 @@ export default function App() {
     { id: "contact", label: "Contact", ref: contactRef },
   ];
 
+  const scrollToSection = (ref, id) => {
+    const target = ref?.current;
+    if (!target) return;
+    const headerHeight = headerRef.current?.offsetHeight ?? 0;
+    const top = target.getBoundingClientRect().top + window.pageYOffset;
+    const offset = Math.max(top - headerHeight - 8, 0);
+    window.scrollTo({ top: offset, behavior: "smooth" });
+    if (id) {
+      window.history.replaceState(null, "", `#${id}`);
+    }
+  };
+
   const handleContactSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -164,7 +223,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-page">
-      <header className="sticky top-0 z-50 border-b border-border bg-page/90 backdrop-blur">
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-50 border-b border-border bg-page/90 backdrop-blur"
+      >
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 px-6 py-6 md:flex-row md:gap-10 max-[650px]:gap-4 max-[650px]:px-4 max-[650px]:py-4">
           <button
             type="button"
@@ -185,7 +247,7 @@ export default function App() {
                 type="button"
                 onClick={() => {
                   setActiveNav(item.id);
-                  item.ref.current?.scrollIntoView({ behavior: "smooth" });
+                  scrollToSection(item.ref, item.id);
                 }}
                 className={`nav-link w-[140px] rounded-2xl px-6 py-4 text-[15px] font-bold hover:underline hover:decoration-white hover:decoration-2 hover:underline-offset-4 max-[650px]:w-auto max-[650px]:rounded-xl max-[650px]:px-4 max-[650px]:py-2 max-[650px]:text-[13px] ${
                   activeNav === item.id
@@ -203,25 +265,32 @@ export default function App() {
       <section
         id="home"
         ref={homeRef}
-        className="mx-auto flex w-full max-w-6xl flex-col items-start gap-10 px-6 py-12 md:flex-row md:gap-12 max-[650px]:gap-8 max-[650px]:px-4 max-[650px]:py-8"
+        className="mx-auto flex w-full max-w-6xl flex-col items-start gap-10 px-6 py-12 md:flex-row md:gap-12 max-[650px]:items-center max-[650px]:gap-8 max-[650px]:px-4 max-[650px]:py-8 max-[650px]:text-center"
       >
-        <div className="flex w-full flex-col gap-6 md:w-2/3">
-          <div className="flex items-center gap-4">
+        <div className="flex w-full flex-col gap-6 md:w-2/3 max-[650px]:items-center max-[650px]:text-center">
+          <div className="flex items-center gap-4 max-[650px]:justify-center">
             <img src={imgPngwingCom11} alt="" className="h-8 w-8" />
             <p className="text-[15px] text-white max-[650px]:text-[14px]">
               Hi, I’m <span className="font-bold text-accentSoft">Yudha W. D.</span>
             </p>
           </div>
-          <h1 className="text-[40px] font-bold text-white max-[650px]:text-[28px]">
-            Web Developer ABAL ABAL
-          </h1>
+          <TextType
+            as="h1"
+            text={["Web Developer"]}
+            typingSpeed={75}
+            pauseDuration={1500}
+            deletingSpeed={50}
+            showCursor
+            cursorCharacter="_"
+            className="text-[40px] font-bold text-white max-[650px]:text-[28px] max-[650px]:leading-tight"
+          />
           <p className="text-[15px] leading-relaxed text-white max-[650px]:text-[14px]">
             Saya berkomitmen untuk terus belajar dan mengembangkan kemampuan
             dalam membangun aplikasi web yang clean dan scalable sesuai best
             practice. Bagi saya, coding adalah tentang menciptakan solusi
             digital yang bermanfaat dan berdampak.
           </p>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4 max-[650px]:justify-center">
             <span className="text-[15px] text-white max-[650px]:text-[14px]">
               Follow me
             </span>
@@ -252,7 +321,7 @@ export default function App() {
               </button>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4 max-[650px]:w-full max-[650px]:flex-col max-[650px]:items-stretch">
             <button
               type="button"
               onClick={() => {
@@ -263,14 +332,14 @@ export default function App() {
                 )}`;
                 window.location.href = whatsappUrl;
               }}
-              className="rounded-2xl bg-accent px-9 py-2 text-[15px] text-white max-[650px]:px-6 max-[650px]:text-[14px]"
+              className="rounded-2xl bg-accent px-9 py-2 text-[15px] text-white transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-accentSoft hover:text-white hover:brightness-110 hover:shadow-[0_8px_20px_rgba(137,44,220,0.35)] active:translate-y-0 max-[650px]:w-full max-[650px]:px-6 max-[650px]:text-[14px]"
             >
               Hire Me
             </button>
             <button
               type="button"
               onClick={() => window.print()}
-              className="rounded-2xl border border-accent px-9 py-2 text-[15px] text-white max-[650px]:px-6 max-[650px]:text-[14px]"
+              className="rounded-2xl border border-accent px-9 py-2 text-[15px] text-white transition duration-200 ease-out hover:-translate-y-0.5 hover:border-accentSoft hover:bg-accent/20 hover:text-accentSoft hover:shadow-[0_8px_20px_rgba(137,44,220,0.2)] active:translate-y-0 max-[650px]:w-full max-[650px]:px-6 max-[650px]:text-[14px]"
             >
               Download CV
             </button>
@@ -278,7 +347,7 @@ export default function App() {
         </div>
         <PixelCard
           variant="pink"
-          className="h-[420px] w-full max-w-[360px] rounded-[50px] border-border bg-surface md:w-[360px] max-[650px]:h-[320px] max-[650px]:max-w-[280px] max-[650px]:rounded-[32px]"
+          className="h-[420px] w-full max-w-[360px] rounded-[50px] border-border bg-surface md:w-[360px] max-[650px]:h-[320px] max-[650px]:max-w-[280px] max-[650px]:rounded-[32px] max-[650px]:self-center"
         >
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative flex h-full w-full items-center justify-center">
@@ -322,7 +391,7 @@ export default function App() {
       <section
         id="about"
         ref={aboutRef}
-        className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:gap-12 max-[650px]:px-4 max-[650px]:py-8"
+        className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:gap-12 max-[650px]:items-center max-[650px]:gap-6 max-[650px]:px-4 max-[650px]:py-8 max-[650px]:text-center"
       >
         <div className="flex flex-col items-start gap-2 text-white md:w-1/3 md:self-stretch md:justify-center max-[650px]:items-center max-[650px]:text-center">
           <div className="text-[100px] font-bold leading-none max-[650px]:text-[64px]">
@@ -333,7 +402,7 @@ export default function App() {
             <div>Pengalaman</div>
           </div>
         </div>
-        <div className="flex w-full flex-col items-center gap-5 text-center md:w-2/3">
+        <div className="flex w-full flex-col items-center gap-5 text-center md:w-2/3 max-[650px]:gap-4">
           <h2 className="text-[30px] font-bold text-white max-[650px]:text-[24px]">
             About Me
           </h2>
@@ -348,8 +417,8 @@ export default function App() {
           <p className="text-[15px] font-bold text-white max-[650px]:text-[14px]">
             yudhajtz@gmail.com
           </p>
-          <div className="flex flex-col gap-6 md:flex-row">
-            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px]">
+          <div className="flex flex-col gap-6 md:flex-row max-[650px]:w-full max-[650px]:items-center">
+            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px] max-[650px]:p-4 max-[650px]:mx-auto">
               <img
                 src={imgWeb}
                 alt=""
@@ -363,7 +432,7 @@ export default function App() {
                 dan scalable.
               </p>
             </div>
-            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px]">
+            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px] max-[650px]:p-4 max-[650px]:mx-auto">
               <img
                 src={imgDesigner}
                 alt=""
@@ -397,11 +466,14 @@ export default function App() {
             event.preventDefault();
             skillScrollRef.current.scrollLeft += event.deltaY;
           }}
-          className="flex w-full items-center justify-center gap-[10px] overflow-x-auto overflow-y-hidden py-[70px] max-[650px]:py-[30px]"
+          className="flex w-full items-center justify-center gap-[10px] overflow-x-auto overflow-y-hidden py-[70px] max-[650px]:gap-[14px] max-[650px]:py-[24px]"
         >
           {loopSkills.map((skill, index) => (
-            <div key={`${skill.name}-${index}`} className="flex items-center gap-[10px]">
-              <div className="flex shrink-0 flex-col items-center justify-center gap-[10px] px-[50px] max-[650px]:gap-[8px] max-[650px]:px-[24px]">
+            <div
+              key={`${skill.name}-${index}`}
+              className="flex items-center gap-[10px] max-[650px]:gap-[14px]"
+            >
+              <div className="flex shrink-0 flex-col items-center justify-center gap-[10px] px-[50px] max-[650px]:gap-[6px] max-[650px]:px-[24px]">
                 <img
                   src={skill.icon}
                   alt=""
@@ -415,7 +487,7 @@ export default function App() {
                 <img
                   src={frame41}
                   alt=""
-                  className="h-[100px] w-[100px] shrink-0 invert-on-light max-[650px]:h-[70px] max-[650px]:w-[70px]"
+                  className="h-[100px] w-[100px] shrink-0 invert-on-light max-[650px]:h-[56px] max-[650px]:w-[56px] max-[650px]:mx-[20px]"
                 />
               )}
             </div>
@@ -438,7 +510,7 @@ export default function App() {
         />
         <div className="flex w-full flex-col">
           <div className="flex w-full flex-wrap items-end gap-[30px] py-[50px] max-[650px]:gap-[16px] max-[650px]:py-[30px]">
-            <div className="flex w-[100px] flex-col items-start justify-end gap-[20px] p-[5px] max-[650px]:w-full max-[650px]:flex-row max-[650px]:items-center max-[650px]:gap-[12px]">
+            <div className="flex w-[100px] flex-col items-start justify-end gap-[20px] p-[5px] max-[650px]:w-full max-[650px]:flex-row max-[650px]:items-center max-[650px]:justify-start max-[650px]:gap-[12px] max-[650px]:text-left">
               <img
                 src={imgDescendingSorting}
                 alt=""
@@ -479,19 +551,36 @@ export default function App() {
             })}
           </div>
           <div className="grid grid-cols-1 place-items-center gap-[50px] md:grid-cols-3">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                data-category={project.category}
-                className="h-[225px] w-full max-w-[400px] md:w-[400px] max-[650px]:h-[200px] max-[650px]:max-w-[320px]"
-              >
+            {filteredProjects.map((project) => {
+              const content = (
                 <img
                   src={project.src}
                   alt={`Project ${categoryLabels[project.category]}`}
                   className="h-full w-full object-cover"
                 />
-              </div>
-            ))}
+              );
+
+              return (
+                <div
+                  key={project.id}
+                  data-category={project.category}
+                  className="h-[225px] w-full max-w-[400px] md:w-[400px] max-[650px]:h-[200px] max-[650px]:max-w-[320px]"
+                >
+                  {project.link ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full w-full"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -561,7 +650,7 @@ export default function App() {
             Kirim Pesan
           </button>
           <p className="text-[12px] text-white/60">
-            Setelah submit, kamu akan diarahkan ke email client untuk mengirim
+            Setelah submit, kamu akan diarahkan ke email untuk mengirim
             pesan ke yudhajtz@gmail.com.
           </p>
         </form>
