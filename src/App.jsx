@@ -12,6 +12,7 @@ import project13Alt from "./assets/projects/1 3 (1).png";
 import project11Alt2 from "./assets/projects/1 1 (2).png";
 import project12Alt2 from "./assets/projects/1 2 (2).png";
 import project13Alt2 from "./assets/projects/1 3 (2).png";
+import TargetCursor from "./components/TargetCursor.jsx";
 
 const imgPngwingCom11 =
   "https://www.figma.com/api/mcp/asset/e2998b04-52ef-4c5e-beec-53e65a6f526b";
@@ -221,8 +222,12 @@ export default function App() {
     window.open(gmailUrl, "_blank", "noopener,noreferrer");
   };
 
+  // Tambahkan TargetCursor di root agar animasi cursor aktif di seluruh halaman
+  // Spin duration 2s, hover duration 0.6s, hide default cursor
+  // Target semua elemen dengan class .cursor-target
   return (
     <div className="min-h-screen bg-page">
+      <TargetCursor spinDuration={2} hoverDuration={0.6} hideDefaultCursor={true} targetSelector={".cursor-target"} />
       <header
         ref={headerRef}
         className="sticky top-0 z-50 border-b border-border bg-page/90 backdrop-blur"
