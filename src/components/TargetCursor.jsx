@@ -45,6 +45,27 @@ const TargetCursor = ({
     });
   }, []);
 
+  // Update cursor colors based on current theme (reads CSS vars from :root)
+  const updateThemeVars = useCallback(() => {
+    if (!cursorRef.current) return;
+    try {
+      const root = document.documentElement;
+      const computed = getComputedStyle(root);
+      const textVar = (computed.getPropertyValue('--text') || '').trim();
+      const accentVar = (computed.getPropertyValue('--accent') || '').trim();
+      // Fallbacks
+      const text = textVar || '255 255 255';
+      const accent = accentVar || '137 44 220';
+      const isLight = root.classList.contains('theme-light');
+      const borderColor = isLight ? `rgb(${text})` : `rgb(255,255,255)`;
+      const dotColor = isLight ? `rgb(${accent})` : `rgb(255,255,255)`;
+      cursorRef.current.style.setProperty('--target-border-color', borderColor);
+      cursorRef.current.style.setProperty('--target-dot-color', dotColor);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
   useEffect(() => {
     if (isMobile || !cursorRef.current) return;
 
@@ -84,6 +105,17 @@ const TargetCursor = ({
     };
 
     createSpinTimeline();
+
+    // set initial theme vars and observe theme changes
+    updateThemeVars();
+    const themeObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          updateThemeVars();
+        }
+      }
+    });
+    themeObserver.observe(document.documentElement, { attributes: true });
 
     const tickerFn = () => {
       if (!targetCornerPositionsRef.current || !cursorRef.current || !cornersRef.current) {
@@ -267,6 +299,7 @@ const TargetCursor = ({
       isActiveRef.current = false;
       targetCornerPositionsRef.current = null;
       activeStrengthRef.current = 0;
+      themeObserver.disconnect();
     };
   }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn]);
 
@@ -288,28 +321,28 @@ const TargetCursor = ({
     <div
       ref={cursorRef}
       className="fixed top-0 left-0 w-0 h-0 pointer-events-none z-[9999]"
-      style={{ willChange: 'transform' }}
+      style={{ willChange: 'transform', '--target-border-color': 'rgb(255,255,255)', '--target-dot-color': 'rgb(255,255,255)' }}
     >
       <div
         ref={dotRef}
-        className="absolute top-1/2 left-1/2 w-1 h-1 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ willChange: 'transform' }}
+        className="absolute top-1/2 left-1/2 w-1 h-1 rounded-full -translate-x-1/2 -translate-y-1/2"
+        style={{ willChange: 'transform', backgroundColor: 'var(--target-dot-color)' }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white -translate-x-[150%] -translate-y-[150%] border-r-0 border-b-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] -translate-x-[150%] -translate-y-[150%] border-r-0 border-b-0"
+        style={{ willChange: 'transform', borderColor: 'var(--target-border-color)' }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white translate-x-1/2 -translate-y-[150%] border-l-0 border-b-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] translate-x-1/2 -translate-y-[150%] border-l-0 border-b-0"
+        style={{ willChange: 'transform', borderColor: 'var(--target-border-color)' }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white translate-x-1/2 translate-y-1/2 border-l-0 border-t-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] translate-x-1/2 translate-y-1/2 border-l-0 border-t-0"
+        style={{ willChange: 'transform', borderColor: 'var(--target-border-color)' }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white -translate-x-[150%] translate-y-1/2 border-r-0 border-t-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] -translate-x-[150%] translate-y-1/2 border-r-0 border-t-0"
+        style={{ willChange: 'transform', borderColor: 'var(--target-border-color)' }}
       />
     </div>
   );
