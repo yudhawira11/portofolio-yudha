@@ -32,6 +32,40 @@ html.theme-light {
   --accent-light: 139 92 246;
 }
 
+/* Light theme optimizations */
+html.theme-light .card-lift,
+html.theme-light .bg-card {
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.04);
+}
+
+html.theme-light .btn-focus,
+html.theme-light button:focus,
+html.theme-light input:focus,
+html.theme-light textarea:focus,
+html.theme-light select:focus {
+  outline: 2px solid rgb(var(--accent) / 0.18);
+  outline-offset: 2px;
+}
+
+/* scrollbar for light theme */
+html.theme-light ::-webkit-scrollbar-track {
+  background: #f4f6f8;
+}
+
+html.theme-light ::-webkit-scrollbar-thumb {
+  background: #cfcfcf;
+}
+
+/* allow opting-out of icon invert if image already dark on light bg */
+.no-invert {
+  filter: none !important;
+}
+
+/* make card content text use correct contrast in light mode */
+html.theme-light .text-white {
+  color: rgb(var(--text)) !important;
+}
+
 * {
   box-sizing: border-box;
 }
