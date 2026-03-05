@@ -222,6 +222,39 @@ export default function App() {
     window.open(gmailUrl, "_blank", "noopener,noreferrer");
   };
 
+  useEffect(() => {
+    // Tambahkan class `cursor-target` ke semua button dan elemen bertanda "card"
+    const addCursorTarget = (el) => {
+      try {
+        if (!el) return;
+        if (el.matches && el.matches('button')) el.classList.add('cursor-target');
+        if (el.className && /card/i.test(el.className)) el.classList.add('cursor-target');
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    const scanAndMark = (root = document) => {
+      document.querySelectorAll('button, [class*="card" i]').forEach((el) => addCursorTarget(el));
+    };
+
+    scanAndMark();
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType !== 1) continue;
+          addCursorTarget(node);
+          node.querySelectorAll && node.querySelectorAll('button, [class*="card" i]').forEach(addCursorTarget);
+        }
+      }
+    });
+
+    observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   // Tambahkan TargetCursor di root agar animasi cursor aktif di seluruh halaman
   // Spin duration 2s, hover duration 0.6s, hide default cursor
   // Target semua elemen dengan class .cursor-target
