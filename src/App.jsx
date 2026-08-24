@@ -1,704 +1,871 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PixelCard from "./components/PixelCard.jsx";
 import TextType from "./components/TextType.jsx";
-import frame41 from "./assets/frame-41.svg";
-import korsaImage from "./assets/projects/korsa remove bg 1.png";
-import project11 from "./assets/projects/1 1.png";
-import project12 from "./assets/projects/1 2.png";
-import project13 from "./assets/projects/1 3.png";
-import project11Alt from "./assets/projects/1 1 (1).png";
-import project12Alt from "./assets/projects/1 2 (1).png";
-import project13Alt from "./assets/projects/1 3 (1).png";
-import project11Alt2 from "./assets/projects/1 1 (2).png";
-import project12Alt2 from "./assets/projects/1 2 (2).png";
-import project13Alt2 from "./assets/projects/1 3 (2).png";
-import TargetCursor from "./components/TargetCursor.jsx";
+import GradientWaves from "./components/GradientWaves.jsx";
+import CursorGrid from "./components/CursorGrid.jsx";
 
-const imgPngwingCom11 =
-  "https://www.figma.com/api/mcp/asset/e2998b04-52ef-4c5e-beec-53e65a6f526b";
-const imgIcon1 =
-  "https://www.figma.com/api/mcp/asset/4fb95363-e65e-4037-9296-abb00599266c";
-const imgReactLogo21 =
-  "https://www.figma.com/api/mcp/asset/72b68839-6e0a-4a3f-9190-fef0e0fb876e";
-const imgIdC111Tb5D17724662657431 =
-  "https://www.figma.com/api/mcp/asset/25cfa9b1-1e9e-4971-9e14-038f5678f6c3";
-const imgPngwingCom12 =
-  "https://www.figma.com/api/mcp/asset/21fd5206-ce58-4112-bf2a-41b4d9e27d82";
-const imgPngwingCom21 =
-  "https://www.figma.com/api/mcp/asset/69724a4a-1ce4-49b5-bd8b-d7b09cfaca77";
-const imgWeb =
-  "https://www.figma.com/api/mcp/asset/d9b49eec-3718-4b4f-83cf-40ba1e8fa14e";
-const imgDesigner =
-  "https://www.figma.com/api/mcp/asset/709eabd3-966a-4287-bacf-36daa4babd75";
-const imgIcon3 =
-  "https://www.figma.com/api/mcp/asset/08e21182-74c3-4ffe-9258-a9be91d5b336";
-const imgIdC111Tb5D17724662657432 =
-  "https://www.figma.com/api/mcp/asset/f088d5ee-4b70-492f-a235-47df39418172";
-const imgIdgBpeRx4Logos1 =
-  "https://www.figma.com/api/mcp/asset/b9b377ac-aead-455e-9543-e61150d1f435";
-const imgPngwingCom13 =
-  "https://www.figma.com/api/mcp/asset/7a473bbc-84be-4880-ab89-5ee38432e5eb";
-const imgVecteezyTheHtml5LogoWithTheNumber5InTheCenter663860051 =
-  "https://www.figma.com/api/mcp/asset/6e54b398-85a8-4cb5-b880-3cc6c12a1619";
-const imgFigma1 =
-  "https://www.figma.com/api/mcp/asset/417e3659-86fe-41de-b131-a8155f6cbf77";
-const imgDescendingSorting =
-  "https://www.figma.com/api/mcp/asset/77209f79-e55c-4dd0-b9a9-b588197e3469";
-const imgGitHub =
-  "https://www.figma.com/api/mcp/asset/97025bd9-5007-4ca9-bce8-7a55ae4ea7ec";
-const imgInstagram =
-  "https://www.figma.com/api/mcp/asset/29587d9b-a57c-4be7-aa0f-84a848214a87";
-const imgFrame27 =
-  "https://www.figma.com/api/mcp/asset/685affbb-efbb-4737-932c-e5005b24a594";
+import helloIcon from "./assets/figma/hello.png";
+import portraitImage from "./assets/figma/portrait.png";
+import laravelIcon from "./assets/figma/laravel.png";
+import reactIcon from "./assets/figma/react.png";
+import tailwindIcon from "./assets/figma/tailwind.png";
+import javascriptIcon from "./assets/figma/javascript.png";
+import phpIcon from "./assets/figma/php.png";
+import cssIcon from "./assets/figma/css.png";
+import htmlIcon from "./assets/figma/html.png";
+import gitIcon from "./assets/figma/git.png";
+import figmaIcon from "./assets/figma/figma.png";
+import webIcon from "./assets/figma/web.png";
+import designerIcon from "./assets/figma/designer.png";
+import githubIcon from "./assets/figma/github.svg";
+import instagramIcon from "./assets/figma/instagram.svg";
+import skillSeparator from "./assets/figma/skill-separator.svg";
+import timelineActive from "./assets/figma/timeline-active.svg";
+import timelineActiveLight from "./assets/figma/timeline-active-light.svg";
+import timelineLineActive from "./assets/figma/timeline-line-active.svg";
+import timelineEmpty from "./assets/figma/timeline-empty.svg";
+import timelineLineMiddle from "./assets/figma/timeline-line-middle.svg";
+import timelineLineEnd from "./assets/figma/timeline-line-end.svg";
+import projectWeb from "./assets/figma/project-web.png";
+import projectSeoArticle from "./assets/figma/project-seo-article.png";
+import projectSeoConsultant from "./assets/figma/project-seo-consultant.png";
+import projectUiux from "./assets/figma/project-uiux.png";
+import sectionLine from "./assets/figma/section-line.svg";
+import projectDot from "./assets/figma/project-dot.svg";
+import arrowUp from "./assets/figma/arrow-up.svg";
 
 const skills = [
-  { name: "Laravel", icon: imgIcon1 },
-  { name: "React", icon: imgIcon3 },
-  { name: "Tailwind", icon: imgIdC111Tb5D17724662657432 },
-  { name: "Javascript", icon: imgPngwingCom21 },
-  { name: "PHP", icon: imgIdgBpeRx4Logos1 },
-  { name: "CSS", icon: imgPngwingCom13 },
-  { name: "HTML", icon: imgVecteezyTheHtml5LogoWithTheNumber5InTheCenter663860051 },
-  { name: "Git", icon: imgPngwingCom12 },
-  { name: "Figma", icon: imgFigma1 },
+  { name: "Laravel", icon: laravelIcon, box: "h-[70px] w-[70px]" },
+  { name: "React", icon: reactIcon, box: "h-[70px] w-[70px]" },
+  { name: "Tailwind", icon: tailwindIcon, box: "h-[70px] w-[70px]" },
+  { name: "Javascript", icon: javascriptIcon, box: "h-[70px] w-[70px]" },
+  { name: "PHP", icon: phpIcon, box: "h-[70px] w-[70px]" },
+  { name: "CSS", icon: cssIcon, box: "h-[70px] w-[70px]" },
+  { name: "HTML", icon: htmlIcon, box: "h-[70px] w-[61px]" },
+  { name: "Git", icon: gitIcon, box: "h-[70px] w-[70px]" },
+  { name: "Figma", icon: figmaIcon, box: "h-[70px] w-[70px]" },
 ];
 
-const projectCategories = [
-  { id: "web", label: "Web Dev" },
+const experiences = [
+  {
+    title: "Web Developer Isee Digital Marketing",
+    year: "2025",
+    description:
+      "Experienced in website development and management, from visual design and feature implementation to performance optimization. She also focuses on implementing SEO and digital marketing strategies to increase website visibility in search engines, expand audience reach, and support digital business growth.",
+    dot: timelineActive,
+    dotLight: timelineActiveLight,
+    line: timelineLineActive,
+    lineIsWhite: false,
+  },
+  {
+    title: "UI/UX Designer",
+    year: "2026",
+    description:
+      "Redesigned the Geoff Max website interface with a focus on improving the user experience on mobile devices. The redesign emphasizes a more responsive layout, intuitive navigation, clear information structure, and mobile-friendly interactions to make the website easier and more comfortable to use across different screen sizes.",
+    dot: timelineEmpty,
+    line: timelineLineMiddle,
+    lineIsWhite: true,
+  },
+  {
+    title: "SEO Consultant",
+    year: "2026",
+    description:
+      "Improved Fullday Project’s search visibility through technical SEO optimization, keyword research, on-page content optimization, and website performance analysis. Monitored indexing, search performance, and SEO issues using Google Search Console to support sustainable organic growth.",
+    dot: timelineEmpty,
+    line: timelineLineEnd,
+    lineIsWhite: true,
+  },
+];
+
+const projectFilters = [
+  { id: "all", label: "All" },
+  { id: "web", label: "Web" },
   { id: "uiux", label: "UI / UX Design" },
-  { id: "seo", label: "SEO Article" },
+  { id: "seo", label: "SEO" },
 ];
-
-const categoryLabels = {
-  web: "Web Dev",
-  uiux: "UI / UX Design",
-  seo: "SEO Article",
-};
 
 const projects = [
   {
-    id: "web-1",
-    src: project11,
+    id: "isee-web",
+    image: projectWeb,
     category: "web",
-    link: "https://github.com/yudhawira11/belajar-laravel-react-tailwind_Peminjaman-Buku.git",
+    meta: "Web Development · Isee Digital Marketing · 2026",
+    title: "Web Developer",
+    tag: "Web",
+    tagClass: "border-red-600 bg-[#fff2f2]",
+    description:
+      "Mengembangkan situs web profil perusahaan yang responsif untuk Isee Digital Marketing guna menampilkan layanan, profil bisnis, dan informasi kontak secara jelas dan profesional.",
+    href: "https://iseedigitalmarketing.com/",
   },
   {
-    id: "web-2",
-    src: project12,
-    category: "web",
-    link: "https://github.com/yudhawira11/belajar-laravel-react-tailwind_Pemesanan-tiket-bioskop.git",
-  },
-  {
-    id: "web-3",
-    src: project13,
-    category: "web",
-    link: "https://github.com/yudhawira11/projek-selekta.git",
-  },
-  {
-    id: "web-4",
-    src: project11Alt,
-    category: "web",
-    link: "https://iseedigitalmarketing.com/",
-  },
-  {
-    id: "web-5",
-    src: project12Alt,
-    category: "web",
-    link: project12Alt,
-  },
-  {
-    id: "uiux-1",
-    src: project13Alt,
-    category: "uiux",
-    link: "https://www.figma.com/proto/gF29eXcR2qpMYu9ja5THtc/Projek-SoilSense?node-id=110-428&p=f&m=dev&scaling=contain&content-scaling=responsive&page-id=0%3A1&starting-point-node-id=110%3A129&t=IzPNhYRNUpwJZQUK-1",
-  },
-  {
-    id: "uiux-2",
-    src: project11Alt2,
-    category: "uiux",
-    link: "https://www.figma.com/proto/GdcZAyrr2lsadODO3EE0w5/Isee-Digital-Marketing?t=ODb1nOCFAQ5IS0B0-1&scaling=contain&content-scaling=responsive&page-id=0%3A1&node-id=26-3&starting-point-node-id=26%3A3",
-  },
-  {
-    id: "seo-1",
-    src: project12Alt2,
+    id: "isee-seo",
+    image: projectSeoArticle,
     category: "seo",
-    link: "https://iseedigitalmarketing.com/konsultan-digital-marketing-untuk-strategi-bisnis-terukur/",
+    meta: "Writing SEO articles · Isee Digital Marketing · 2026",
+    title: "SEO Specialist",
+    tag: "SEO",
+    tagClass: "border-blue-600 bg-[#f2f2ff]",
+    description:
+      "Developed and optimized SEO articles for Isee Digital Marketing by conducting keyword research, creating search-engine-friendly content, and monitoring website performance through Google Search Console to improve organic visibility and search rankings.",
+    href: "https://iseedigitalmarketing.com/narasumber-digital-marketing-profesional-untuk-bisnis-modern/",
   },
   {
-    id: "seo-2",
-    src: project13Alt2,
+    id: "fullday-seo",
+    image: projectSeoConsultant,
     category: "seo",
-    link: "https://iseedigitalmarketing.com/narasumber-digital-marketing-profesional-untuk-bisnis-modern/",
+    meta: "Technical SEO · Fullday Project · 2026",
+    title: "SEO consultant",
+    tag: "SEO",
+    tagClass: "border-blue-600 bg-[#f2f2ff]",
+    description:
+      "Optimized FullDay Project’s SEO through technical analysis, keyword optimization, content improvement, and performance monitoring using Google Search Console.",
+  },
+  {
+    id: "geoffmax-uiux",
+    image: projectUiux,
+    category: "uiux",
+    meta: "Mobile-friendly website redesign · Geoffmax · 2026",
+    title: "UI/UX Designer",
+    tag: "UI/UX Design",
+    tagClass: "border-green-700 bg-[#f2f9f2]",
+    description:
+      "Redesigned the Geoffmax website for a mobile-friendly experience, improving layout, navigation, and product presentation to make browsing more intuitive and responsive across devices.",
   },
 ];
 
+function SectionTitle({ children, imageUnderline = false }) {
+  return (
+    <div
+      className={
+        imageUnderline
+          ? "flex flex-col items-center gap-[10px] py-[10px]"
+          : "border-b-[5px] border-[#892cdc] py-[5px]"
+      }
+    >
+      <h2 className="text-center text-[30px] font-bold leading-[1.5] text-white max-sm:text-[25px]">
+        {children}
+      </h2>
+      {imageUnderline && (
+        <img src={sectionLine} alt="" className="h-[7px] w-[109px]" />
+      )}
+    </div>
+  );
+}
+
+function RoleCard({ icon, title, children }) {
+  return (
+    <PixelCard
+      gap={8}
+      speed={30}
+      colors="#892cdc,#bc6ff1,#47b5ff"
+      className="figma-card !h-[252px] !w-full !rounded-[30px] !border-[#202020] md:!w-[300px]"
+    >
+      <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-[10px] p-[20px] text-center">
+        <img
+          src={icon}
+          alt=""
+          className="theme-white-icon h-[100px] w-[100px] object-contain"
+        />
+        <h3 className="text-[15px] text-[#47b5ff]">{title}</h3>
+        <p className="text-[15px] leading-[1.5] text-white">{children}</p>
+      </div>
+    </PixelCard>
+  );
+}
+
+function ProjectCard({ project }) {
+  const card = (
+    <article className="project-card cursor-target flex h-[470px] w-full flex-col overflow-hidden rounded-[30px] border border-white bg-[#c0c0c0] text-black transition-transform duration-300 hover:-translate-y-1 xl:w-[430px]">
+      <div className="h-[250px] w-full shrink-0 overflow-hidden">
+        <img
+          src={project.image}
+          alt={project.title}
+          className={`h-full w-full object-cover ${
+            project.id === "geoffmax-uiux" ? "object-[center_72%]" : "object-center"
+          }`}
+        />
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-[10px] overflow-hidden px-[15px] py-[10px]">
+        <p className="text-[13px] leading-[1.5]">{project.meta}</p>
+        <div className="flex flex-col gap-[5px]">
+          <h3 className="text-[20px] font-bold leading-[1.5]">{project.title}</h3>
+          <span
+            className={`w-fit rounded-[10px] border p-[5px] text-[10px] leading-[1.5] ${project.tagClass}`}
+          >
+            {project.tag}
+          </span>
+          <p className="text-[15px] leading-[1.53]">{project.description}</p>
+        </div>
+      </div>
+    </article>
+  );
+
+  return project.href ? (
+    <a href={project.href} target="_blank" rel="noreferrer" className="block">
+      {card}
+    </a>
+  ) : (
+    card
+  );
+}
+
 export default function App() {
-  const skillScrollRef = useRef(null);
-  const homeRef = useRef(null);
-  const aboutRef = useRef(null);
-  const skillRef = useRef(null);
-  const projectRef = useRef(null);
-  const contactRef = useRef(null);
   const headerRef = useRef(null);
+  const skillScrollRef = useRef(null);
+  const experienceRowsRef = useRef([]);
+  const sectionRefs = {
+    home: useRef(null),
+    about: useRef(null),
+    skill: useRef(null),
+    project: useRef(null),
+    contact: useRef(null),
+  };
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
-    const stored = window.localStorage.getItem("theme");
-    if (stored) return stored;
-    return window.matchMedia("(prefers-color-scheme: light)").matches
-      ? "light"
-      : "dark";
+    return window.localStorage.getItem("theme") || "dark";
   });
-  const [activeCategory, setActiveCategory] = useState("web");
-  const [activeNav, setActiveNav] = useState("home");
+  const [activeNav, setActiveNav] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeExperienceIndex, setActiveExperienceIndex] = useState(-1);
+
+  const navItems = [
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "skill", label: "Skill" },
+    { id: "project", label: "Project" },
+    { id: "contact", label: "Contact" },
+  ];
+
+  const visibleProjects = useMemo(
+    () =>
+      activeFilter === "all"
+        ? projects
+        : projects.filter((project) => project.category === activeFilter),
+    [activeFilter]
+  );
 
   useEffect(() => {
-    const container = skillScrollRef.current;
-    if (!container) return;
-
-    let animationId;
-    const speed = 0.5;
-
-    const tick = () => {
-      if (!container) return;
-      const maxScroll = container.scrollWidth / 2;
-      container.scrollLeft += speed;
-      if (container.scrollLeft >= maxScroll) {
-        container.scrollLeft = 0;
-      }
-      animationId = requestAnimationFrame(tick);
-    };
-
-    animationId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "light") {
-      root.classList.add("theme-light");
-    } else {
-      root.classList.remove("theme-light");
-    }
+    document.documentElement.classList.toggle("theme-light", theme === "light");
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const loopSkills = [...skills, ...skills];
-  const filteredProjects = projects.filter(
-    (project) => project.category === activeCategory
-  );
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll("[data-scroll-reveal]"));
+    const reveal = (section) => section.classList.add("is-revealed");
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-  const navItems = [
-    { id: "home", label: "Home", ref: homeRef },
-    { id: "about", label: "About", ref: aboutRef },
-    { id: "skill", label: "Skill", ref: skillRef },
-    { id: "project", label: "Project", ref: projectRef },
-    { id: "contact", label: "Contact", ref: contactRef },
-  ];
-
-  const scrollToSection = (ref, id) => {
-    const target = ref?.current;
-    if (!target) return;
-    const headerHeight = headerRef.current?.offsetHeight ?? 0;
-    const top = target.getBoundingClientRect().top + window.pageYOffset;
-    const offset = Math.max(top - headerHeight - 8, 0);
-    window.scrollTo({ top: offset, behavior: "smooth" });
-    if (id) {
-      window.history.replaceState(null, "", `#${id}`);
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      sections.forEach(reveal);
+      return undefined;
     }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const container = skillScrollRef.current;
+    if (!container) return undefined;
+
+    let animationFrame;
+    let paused = false;
+    container.scrollLeft = 540;
+    const tick = () => {
+      if (!paused) {
+        container.scrollLeft += 0.55;
+        if (container.scrollLeft >= container.scrollWidth / 2) {
+          container.scrollLeft = 0;
+        }
+      }
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+    const pause = () => {
+      paused = true;
+    };
+    const resume = () => {
+      paused = false;
+    };
+
+    container.addEventListener("mouseenter", pause);
+    container.addEventListener("mouseleave", resume);
+    container.addEventListener("touchstart", pause, { passive: true });
+    container.addEventListener("touchend", resume, { passive: true });
+    animationFrame = window.requestAnimationFrame(tick);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      container.removeEventListener("mouseenter", pause);
+      container.removeEventListener("mouseleave", resume);
+      container.removeEventListener("touchstart", pause);
+      container.removeEventListener("touchend", resume);
+    };
+  }, []);
+
+  useEffect(() => {
+    let animationFrame = 0;
+
+    const updateActiveExperience = () => {
+      animationFrame = 0;
+      const triggerPoint = window.innerHeight * 0.8;
+      let nextActiveIndex = -1;
+
+      experienceRowsRef.current.forEach((row, index) => {
+        if (row && row.getBoundingClientRect().top <= triggerPoint) {
+          nextActiveIndex = index;
+        }
+      });
+
+      setActiveExperienceIndex((current) =>
+        current === nextActiveIndex ? current : nextActiveIndex
+      );
+    };
+
+    const scheduleUpdate = () => {
+      if (animationFrame !== 0) return;
+      animationFrame = window.requestAnimationFrame(updateActiveExperience);
+    };
+
+    updateActiveExperience();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (animationFrame !== 0) window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, []);
+
+  const scrollTo = (id) => {
+    const node = sectionRefs[id]?.current;
+    if (!node) return;
+    const headerHeight = headerRef.current?.offsetHeight || 0;
+    const top = node.getBoundingClientRect().top + window.scrollY - headerHeight;
+    window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+    setActiveNav(id);
+    window.history.replaceState(null, "", `#${id}`);
   };
 
   const handleContactSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") || "-";
-    const email = formData.get("email") || "-";
-    const phone = formData.get("phone") || "-";
-    const message = formData.get("message") || "-";
-    const subject = `Portfolio Contact - ${name}`;
-    const body = `Nama: ${name}\nEmail: ${email}\nNo Telepon: ${phone}\n\nPesan:\n${message}`;
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    const data = new FormData(event.currentTarget);
+    const subject = `Portfolio Contact - ${data.get("name") || "Pengunjung"}`;
+    const body = [
+      `Nama: ${data.get("name") || "-"}`,
+      `Email: ${data.get("email") || "-"}`,
+      `No Telepon: ${data.get("phone") || "-"}`,
+      "",
+      "Pesan:",
+      data.get("message") || "-",
+    ].join("\n");
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
       "yudhajtz@gmail.com"
     )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  useEffect(() => {
-    // Tambahkan class `cursor-target` ke semua button dan elemen bertanda "card"
-    const addCursorTarget = (el) => {
-      try {
-        if (!el) return;
-        if (el.matches && el.matches('button')) el.classList.add('cursor-target');
-        if (el.className && /card/i.test(el.className)) el.classList.add('cursor-target');
-      } catch (e) {
-        // ignore
-      }
-    };
+  const loopedSkills = [...skills, ...skills];
 
-    const scanAndMark = (root = document) => {
-      document.querySelectorAll('button, [class*="card" i]').forEach((el) => addCursorTarget(el));
-    };
-
-    scanAndMark();
-
-    const observer = new MutationObserver((mutations) => {
-      for (const m of mutations) {
-        for (const node of m.addedNodes) {
-          if (node.nodeType !== 1) continue;
-          addCursorTarget(node);
-          node.querySelectorAll && node.querySelectorAll('button, [class*="card" i]').forEach(addCursorTarget);
-        }
-      }
-    });
-
-    observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Tambahkan TargetCursor di root agar animasi cursor aktif di seluruh halaman
-  // Spin duration 2s, hover duration 0.6s, hide default cursor
-  // Target semua elemen dengan class .cursor-target
   return (
-    <div className="min-h-screen bg-page">
-      <TargetCursor spinDuration={2} hoverDuration={0.6} hideDefaultCursor={true} targetSelector={".cursor-target"} />
+    <div className="min-h-screen overflow-x-hidden bg-page text-white">
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 border-b border-border bg-page/90 backdrop-blur"
+        className="sticky top-0 z-50 border-b border-[#202020] bg-page"
       >
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-6 px-6 py-6 md:flex-row md:gap-10 max-[650px]:gap-4 max-[650px]:px-4 max-[650px]:py-4">
+        <div className="mx-auto flex min-h-[123px] w-full max-w-[1512px] items-center justify-between gap-8 px-[50px] py-[30px] max-lg:flex-col max-lg:gap-5 max-lg:px-6 max-lg:py-5">
           <button
             type="button"
-            onClick={() =>
-              setTheme((prev) => (prev === "light" ? "dark" : "light"))
-            }
-            className="relative rounded-lg bg-accentLight p-[1px] transition hover:brightness-110"
-            aria-label="Toggle theme"
+            onClick={() => setTheme((value) => (value === "dark" ? "light" : "dark"))}
+            className="cursor-target relative h-[43px] w-[115px] shrink-0"
+            aria-label={`Aktifkan tema ${theme === "dark" ? "terang" : "gelap"}`}
           >
-            <span className="block rounded-lg bg-panel px-7 py-3 font-inter text-[16px] font-bold text-accentLight max-[650px]:px-5 max-[650px]:py-2 max-[650px]:text-[14px]">
-              {theme === "light" ? "Light" : "Dark"}
+            <span
+              aria-hidden="true"
+              className="absolute -left-px -top-px h-[47px] w-[117px] rounded-[8px] bg-[#a581ef]"
+            />
+            <span className="absolute left-0 top-0 z-10 flex h-[43px] w-[115px] items-center justify-center rounded-[8px] bg-[#15141a] px-[30px] py-[12px] font-inter text-[16px] font-bold text-[#a581ef]">
+              {theme === "dark" ? "Light" : "Dark"}
             </span>
           </button>
-          <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-8 max-[650px]:gap-2">
+
+          <nav className="skill-scroll flex max-w-full items-center justify-end gap-[50px] overflow-x-auto max-lg:w-full max-lg:justify-start max-lg:gap-3">
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.id}
-                type="button"
-                onClick={() => {
-                  setActiveNav(item.id);
-                  scrollToSection(item.ref, item.id);
+                href={`#${item.id}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollTo(item.id);
                 }}
-                className={`nav-link w-[140px] rounded-2xl px-6 py-4 text-[15px] font-bold hover:underline hover:decoration-white hover:decoration-2 hover:underline-offset-4 max-[650px]:w-auto max-[650px]:rounded-xl max-[650px]:px-4 max-[650px]:py-2 max-[650px]:text-[13px] ${
-                  activeNav === item.id
-                    ? "text-accentSoft underline decoration-white decoration-2 underline-offset-4"
-                    : "text-white"
+                aria-current={activeNav === item.id ? "page" : undefined}
+                className={`cursor-target flex w-[150px] shrink-0 items-center justify-center rounded-[20px] bg-page p-[20px] text-center text-[15px] font-bold transition-colors max-lg:w-auto max-lg:min-w-[105px] max-lg:px-5 max-lg:py-3 ${
+                  activeNav === item.id ? "text-[#bc6ff1]" : "text-white"
                 }`}
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </nav>
         </div>
       </header>
 
-      <section
-        id="home"
-        ref={homeRef}
-        className="mx-auto flex w-full max-w-6xl flex-col items-start gap-10 px-6 py-12 md:flex-row md:gap-12 max-[650px]:items-center max-[650px]:gap-8 max-[650px]:px-4 max-[650px]:py-8 max-[650px]:text-center"
-      >
-        <div className="flex w-full flex-col gap-6 md:w-2/3 max-[650px]:items-center max-[650px]:text-center">
-          <div className="flex items-center gap-4 max-[650px]:justify-center">
-            <img src={imgPngwingCom11} alt="" className="h-8 w-8" />
-            <p className="text-[15px] text-white max-[650px]:text-[14px]">
-              Hi, I’m <span className="font-bold text-accentSoft">Yudha W. D.</span>
-            </p>
+      <main className="mx-auto w-full max-w-[1512px]">
+        <section
+          id="home"
+          ref={sectionRefs.home}
+          data-scroll-reveal
+          className="relative isolate flex min-h-[474px] w-full items-center gap-[50px] overflow-hidden px-[50px] py-[50px] max-lg:flex-col max-lg:px-6 max-sm:px-4"
+        >
+          <div aria-hidden="true" data-reveal-static className="absolute inset-0 z-0">
+            <GradientWaves
+              horizonColor="#892CDC"
+              waveColor="#52057B"
+              crestColor="#ffffff"
+              speed={0.4}
+              amplitude={2.5}
+              waveScale={0.6}
+              waveRatio={0.9}
+              swell={35}
+              turbulence={20}
+              tilt={1.11}
+              zoom={1}
+              height={5.5}
+              fogDepth={15}
+              detail="medium"
+              brightness={1}
+              opacity={1}
+              mouseInteraction
+              parallaxStrength={0.5}
+              grain
+              grainIntensity={0.05}
+            />
           </div>
-          <TextType
-            as="h1"
-            text={["Web Developer"]}
-            typingSpeed={75}
-            pauseDuration={1500}
-            deletingSpeed={50}
-            showCursor
-            cursorCharacter="_"
-            className="text-[40px] font-bold text-white max-[650px]:text-[28px] max-[650px]:leading-tight"
+          <div
+            aria-hidden="true"
+            data-reveal-static
+            className="home-waves-overlay pointer-events-none absolute inset-0 z-[1]"
           />
-          <p className="text-[15px] leading-relaxed text-white max-[650px]:text-[14px]">
-            Saya berkomitmen untuk terus belajar dan mengembangkan kemampuan
-            dalam membangun aplikasi web yang clean dan scalable sesuai best
-            practice. Bagi saya, coding adalah tentang menciptakan solusi
-            digital yang bermanfaat dan berdampak.
-          </p>
-          <div className="flex flex-wrap items-center gap-4 max-[650px]:justify-center">
-            <span className="text-[15px] text-white max-[650px]:text-[14px]">
-              Follow me
-            </span>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  window.location.href = "https://github.com/yudhawira11";
-                }}
-                className="h-7 w-7"
-                aria-label="GitHub"
-              >
-                <img src={imgGitHub} alt="GitHub" className="h-7 w-7 theme-icon" />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  window.location.href = "https://www.instagram.com/yudha9c70";
-                }}
-                className="h-7 w-7"
-                aria-label="Instagram"
-              >
-                <img
-                  src={imgInstagram}
-                  alt="Instagram"
-                  className="h-7 w-7 theme-icon"
-                />
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-4 max-[650px]:w-full max-[650px]:flex-col max-[650px]:items-stretch">
-            <button
-              type="button"
-              onClick={() => {
-                const message =
-                  "Halo bang, saya ingin kolaborasi/kerjasama/ingin dibuatkan web.";
-                const whatsappUrl = `https://wa.me/6282229672395?text=${encodeURIComponent(
-                  message
-                )}`;
-                window.location.href = whatsappUrl;
-              }}
-              className="rounded-2xl bg-accent px-9 py-2 text-[15px] text-white transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-accentSoft hover:text-white hover:brightness-110 hover:shadow-[0_8px_20px_rgba(137,44,220,0.35)] active:translate-y-0 max-[650px]:w-full max-[650px]:px-6 max-[650px]:text-[14px]"
-            >
-              Hire Me
-            </button>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="rounded-2xl border border-accent px-9 py-2 text-[15px] text-white transition duration-200 ease-out hover:-translate-y-0.5 hover:border-accentSoft hover:bg-accent/20 hover:text-accentSoft hover:shadow-[0_8px_20px_rgba(137,44,220,0.2)] active:translate-y-0 max-[650px]:w-full max-[650px]:px-6 max-[650px]:text-[14px]"
-            >
-              Download CV
-            </button>
-          </div>
-        </div>
-        <PixelCard
-          variant="pink"
-          className="h-[420px] w-full max-w-[360px] rounded-[50px] border-border bg-surface md:w-[360px] max-[650px]:h-[320px] max-[650px]:max-w-[280px] max-[650px]:rounded-[32px] max-[650px]:self-center"
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative flex h-full w-full items-center justify-center">
-              <div className="h-[354px] w-[332px] max-[650px]:h-[250px] max-[650px]:w-[230px]">
-                <img
-                  src={korsaImage}
-                  alt="Profile"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <img
-                src={imgIcon1}
-                alt=""
-                className="absolute left-[15%] top-[45%] h-8 w-8 rounded-full max-[650px]:h-6 max-[650px]:w-6"
-              />
-              <img
-                src={imgReactLogo21}
-                alt=""
-                className="absolute right-[12%] top-[38%] h-7 w-7 max-[650px]:h-5 max-[650px]:w-5"
-              />
-              <img
-                src={imgIdC111Tb5D17724662657431}
-                alt=""
-                className="absolute left-[28%] top-[20%] h-10 w-10 rounded-full max-[650px]:h-7 max-[650px]:w-7"
-              />
-              <img
-                src={imgPngwingCom12}
-                alt=""
-                className="absolute right-[18%] top-[28%] h-8 w-8 max-[650px]:h-6 max-[650px]:w-6"
-              />
-              <img
-                src={imgPngwingCom21}
-                alt=""
-                className="absolute left-[12%] top-[32%] h-8 w-8 max-[650px]:h-6 max-[650px]:w-6"
-              />
-            </div>
-          </div>
-        </PixelCard>
-      </section>
 
-      <section
-        id="about"
-        ref={aboutRef}
-        className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:flex-row md:gap-12 max-[650px]:items-center max-[650px]:gap-6 max-[650px]:px-4 max-[650px]:py-8 max-[650px]:text-center"
-      >
-        <div className="flex flex-col items-start gap-2 text-white md:w-1/3 md:self-stretch md:justify-center max-[650px]:items-center max-[650px]:text-center">
-          <div className="text-[100px] font-bold leading-none max-[650px]:text-[64px]">
-            1 +
-          </div>
-          <div className="text-[30px] font-bold leading-tight max-[650px]:text-[20px]">
-            <div>Tahun</div>
-            <div>Pengalaman</div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col items-center gap-5 text-center md:w-2/3 max-[650px]:gap-4">
-          <h2 className="text-[30px] font-bold text-white max-[650px]:text-[24px]">
-            About Me
-          </h2>
-          <img src={imgFrame27} alt="" className="h-5 w-36" />
-          <p className="text-[15px] leading-relaxed text-white max-[650px]:text-[14px]">
-            Saya Yudha Wira Dharma, Web Developer yang sangat passionate dan
-            berdedikasi terhadap pekerjaan saya. Sebagai mahasiswa Informatika
-            dengan minat kuat di bidang web development, saya terus
-            mengembangkan keterampilan dan pengetahuan untuk membangun aplikasi
-            web yang clean, scalable, dan berdampak.
-          </p>
-          <p className="text-[15px] font-bold text-white max-[650px]:text-[14px]">
-            yudhajtz@gmail.com
-          </p>
-          <div className="flex flex-col gap-6 md:flex-row max-[650px]:w-full max-[650px]:items-center">
-            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px] max-[650px]:p-4 max-[650px]:mx-auto">
-              <img
-                src={imgWeb}
-                alt=""
-                className="h-24 w-24 object-contain theme-icon max-[650px]:h-20 max-[650px]:w-20"
-              />
-              <p className="text-[15px] text-accentBlue max-[650px]:text-[14px]">
-                Web Developer
-              </p>
-              <p className="text-[15px] text-white max-[650px]:text-[14px]">
-                Berpengalaman membangun aplikasi web yang clean, fungsional,
-                dan scalable.
+          <div className="relative z-10 flex w-[678px] shrink-0 flex-col items-start gap-[10px] max-lg:w-full">
+            <div className="flex items-center justify-center gap-[30px]">
+              <img src={helloIcon} alt="" className="h-[33px] w-[33px] object-cover" />
+              <p className="text-[15px] leading-[1.5] text-white">
+                Hi, I’m <strong className="text-[#bc6ff1]">Yudha W. D.</strong>
               </p>
             </div>
-            <div className="flex w-[300px] flex-col items-center gap-3 rounded-3xl border border-border bg-card p-5 max-[650px]:w-full max-[650px]:max-w-[320px] max-[650px]:p-4 max-[650px]:mx-auto">
-              <img
-                src={imgDesigner}
-                alt=""
-                className="h-24 w-24 object-contain theme-icon max-[650px]:h-20 max-[650px]:w-20"
-              />
-              <p className="text-[15px] text-accentBlue max-[650px]:text-[14px]">
-                UI / UX Designer
-              </p>
-              <p className="text-[15px] text-white max-[650px]:text-[14px]">
-                Berpengalaman merancang UI yang intuitif dan berfokus pada
-                pengalaman pengguna.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="skill"
-        ref={skillRef}
-        className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-6 py-12 max-[650px]:px-4 max-[650px]:py-8"
-      >
-        <h2 className="text-[30px] font-bold text-white max-[650px]:text-[24px]">
-          Skill
-        </h2>
-        <img src={imgFrame27} alt="" className="h-5 w-36" />
-        <div
-          ref={skillScrollRef}
-          onWheel={(event) => {
-            if (!skillScrollRef.current) return;
-            event.preventDefault();
-            skillScrollRef.current.scrollLeft += event.deltaY;
-          }}
-          className="flex w-full items-center justify-center gap-[10px] overflow-x-auto overflow-y-hidden py-[70px] max-[650px]:gap-[14px] max-[650px]:py-[24px]"
-        >
-          {loopSkills.map((skill, index) => (
-            <div
-              key={`${skill.name}-${index}`}
-              className="flex items-center gap-[10px] max-[650px]:gap-[14px]"
-            >
-              <div className="flex shrink-0 flex-col items-center justify-center gap-[10px] px-[50px] max-[650px]:gap-[6px] max-[650px]:px-[24px]">
-                <img
-                  src={skill.icon}
-                  alt=""
-                  className="h-[70px] w-[70px] object-contain max-[650px]:h-[50px] max-[650px]:w-[50px]"
-                />
-                <p className="text-[20px] font-bold text-white max-[650px]:text-[16px]">
-                  {skill.name}
-                </p>
-              </div>
-              {index < loopSkills.length - 1 && (
-                <img
-                  src={frame41}
-                  alt=""
-                  className="h-[100px] w-[100px] shrink-0 invert-on-light max-[650px]:h-[56px] max-[650px]:w-[56px] max-[650px]:mx-[20px]"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="project"
-        ref={projectRef}
-        className="mx-auto flex w-full max-w-[1400px] flex-col items-center gap-6 px-6 py-12 md:px-[70px] max-[650px]:px-4 max-[650px]:py-8"
-      >
-        <h2 className="text-[30px] font-bold text-white max-[650px]:text-[24px]">
-          Project
-        </h2>
-        <img
-          src={imgFrame27}
-          alt=""
-          className="h-[20px] w-[150px] max-[650px]:h-[16px] max-[650px]:w-[120px]"
-        />
-        <div className="flex w-full flex-col">
-          <div className="flex w-full flex-wrap items-end gap-[30px] py-[50px] max-[650px]:gap-[16px] max-[650px]:py-[30px]">
-            <div className="flex w-[100px] flex-col items-start justify-end gap-[20px] p-[5px] max-[650px]:w-full max-[650px]:flex-row max-[650px]:items-center max-[650px]:justify-start max-[650px]:gap-[12px] max-[650px]:text-left">
-              <img
-                src={imgDescendingSorting}
-                alt=""
-                className="h-[50px] w-[50px] object-contain theme-icon max-[650px]:h-[40px] max-[650px]:w-[40px]"
-              />
-              <p className="text-[20px] font-bold text-white max-[650px]:text-[16px]">
-                Sort
-              </p>
-            </div>
-            {projectCategories.map((item) => {
-              const isActive = activeCategory === item.id;
-
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveCategory(item.id)}
-                  aria-pressed={isActive}
-                  className={`group flex items-center gap-[30px] text-left transition hover:text-white hover:underline hover:decoration-white hover:underline-offset-4 max-[650px]:gap-[12px] ${
-                    isActive
-                      ? "text-white underline decoration-white underline-offset-4"
-                      : "text-white/60"
-                  }`}
+            <TextType
+              as="h1"
+              text={["Web Developer", "UI/UX Designer"]}
+              loop
+              showCursor={false}
+              typingSpeed={55}
+              className="min-h-[60px] text-[40px] font-bold leading-[1.5] text-white max-sm:min-h-[48px] max-sm:text-[32px]"
+            />
+            <p className="w-full pt-[10px] text-justify text-[15px] leading-[1.53] text-white">
+              I am committed to continuously learning and developing my skills in building clean,
+              scalable web applications in accordance with best practices. To me, coding is about
+              creating digital solutions that are useful and impactful.
+            </p>
+            <div className="flex items-center justify-center gap-[10px] py-[20px]">
+              <span className="text-[15px]">Follow me</span>
+              <div className="flex items-center gap-[10px] px-[10px]">
+                <a
+                  href="https://github.com/yudhawira11"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="cursor-target h-[30px] w-[30px]"
+                  aria-label="GitHub"
                 >
-                  <span
-                    data-active={isActive ? "true" : "false"}
-                    className={`bullet-dot h-[20px] w-[20px] rounded-full border transition-all max-[650px]:h-[14px] max-[650px]:w-[14px] ${
-                      isActive
-                        ? "border-accentSoft bg-accentSoft shadow-[0_0_10px_rgba(188,111,241,0.7)]"
-                        : "border-white/40 bg-white/10 group-hover:border-accent group-hover:bg-accent group-hover:shadow-[0_0_10px_rgba(137,44,220,0.7)]"
-                    }`}
+                  <img
+                    src={githubIcon}
+                    alt=""
+                    className="theme-white-icon h-[30px] w-[30px]"
                   />
-                  <p className="text-[20px] font-bold max-[650px]:text-[16px]">
-                    {item.label}
-                  </p>
-                </button>
-              );
-            })}
+                </a>
+                <a
+                  href="https://www.instagram.com/yudha9c70"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="cursor-target h-[30px] w-[30px]"
+                  aria-label="Instagram"
+                >
+                  <img
+                    src={instagramIcon}
+                    alt=""
+                    className="theme-white-icon h-[30px] w-[30px]"
+                  />
+                </a>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-[10px]">
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                className="cursor-target rounded-[20px] bg-[#892cdc] px-[35px] py-[10px] text-[15px] text-white"
+              >
+                Hire Me
+              </button>
+              <a
+                href="/cv.pdf"
+                download
+                className="cursor-target rounded-[20px] border border-[#892cdc] px-[40px] py-[8px] text-[15px] text-white"
+              >
+                Download CV
+              </a>
+            </div>
           </div>
-          <div className="grid grid-cols-1 place-items-center gap-[50px] md:grid-cols-3">
-            {filteredProjects.map((project) => {
-              const content = (
+
+          <div className="relative z-10 h-[374px] min-w-0 flex-1 bg-transparent max-lg:w-full max-lg:flex-none">
+            <div className="absolute inset-0 z-10 flex items-center justify-center py-[10px]">
+              <div className="relative h-[354px] w-[332px] shrink-0 overflow-hidden">
                 <img
-                  src={project.src}
-                  alt={`Project ${categoryLabels[project.category]}`}
-                  className="h-full w-full object-cover"
+                  src={portraitImage}
+                  alt="Yudha Wira Dharma"
+                  className="absolute left-0 top-0 h-[500px] w-[332px] max-w-none object-contain object-top"
                 />
-              );
+              </div>
+              <img
+                src={laravelIcon}
+                alt="Laravel"
+                className="hero-floating-icon hero-floating-icon--laravel absolute left-[calc(50%_-_98.5px)] top-[calc(50%_-_31.5px)] h-[31px] w-[31px] rounded-[30px] object-cover"
+              />
+              <img
+                src={reactIcon}
+                alt="React"
+                className="hero-floating-icon hero-floating-icon--react absolute left-[calc(50%_+_83px)] top-[calc(50%_-_59px)] h-[28px] w-[31px] object-cover"
+              />
+              <img
+                src={tailwindIcon}
+                alt="Tailwind CSS"
+                className="hero-floating-icon hero-floating-icon--tailwind absolute left-[calc(50%_-_93px)] top-[calc(50%_-_177px)] h-[44px] w-[44px] rounded-[30px] object-cover"
+              />
+              <img
+                src={gitIcon}
+                alt="Git"
+                className="hero-floating-icon hero-floating-icon--git absolute left-[calc(50%_+_68px)] top-[calc(50%_-_133px)] h-[35px] w-[35px] object-cover"
+              />
+              <img
+                src={javascriptIcon}
+                alt="JavaScript"
+                className="hero-floating-icon hero-floating-icon--javascript absolute left-[calc(50%_-_116px)] top-[calc(50%_-_108px)] h-[33px] w-[33px] object-cover"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="about"
+          ref={sectionRefs.about}
+          data-scroll-reveal
+          className="flex min-h-[566px] flex-col items-center gap-[50px] px-[50px] py-[50px] max-lg:px-6 max-sm:px-4"
+        >
+          <SectionTitle>About Me</SectionTitle>
+          <div className="flex w-full flex-col items-center gap-[30px]">
+            <p className="max-w-[1123px] pt-[10px] text-justify text-[15px] leading-[1.53] text-white">
+              I am Yudha Wira Dharma, a web developer and Informatics student with a strong passion
+              for web development. I enjoy continuous learning, exploring new technologies, and
+              honing my skills to build clean, scalable web applications that deliver excellent
+              user experiences. In every project, I strive to integrate technical aspects,
+              functionality, and design to create solutions that not only perform well but also
+              deliver tangible impact.
+            </p>
+            <div className="flex w-full items-center justify-center gap-[100px] max-lg:flex-col max-lg:gap-10">
+              <div className="flex w-[200px] shrink-0 flex-col items-start gap-[10px] font-bold text-white max-lg:items-center">
+                <strong className="text-[100px] leading-[1.5] max-sm:text-[76px]">2 +</strong>
+                <span className="text-[30px] leading-[1.5]">
+                  Tahun
+                  <br />
+                  Pengalaman
+                </span>
+              </div>
+              <div className="flex items-center gap-[50px] max-md:w-full max-md:flex-col max-md:gap-6">
+                <RoleCard icon={webIcon} title="Web Developer">
+                  Experienced in building clean, functional, and scalable web applications.
+                </RoleCard>
+                <RoleCard icon={designerIcon} title="UI / UX Designer">
+                  Experience designing responsive UI and focusing on user experience.
+                </RoleCard>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="skill"
+          ref={sectionRefs.skill}
+          data-scroll-reveal
+          className="flex min-h-[375px] flex-col items-center gap-[10px] px-[50px] py-[50px] max-lg:px-0"
+        >
+          <SectionTitle>Skill</SectionTitle>
+          <div
+            ref={skillScrollRef}
+            className="skill-scroll flex w-full items-center overflow-x-auto overflow-y-hidden py-[50px]"
+          >
+            {loopedSkills.map((skill, index) => (
+              <div key={`${skill.name}-${index}`} className="flex shrink-0 items-center">
+                <div className="flex min-w-[170px] flex-col items-center justify-center gap-[10px] px-[50px]">
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    className={`${skill.box} max-w-none shrink-0 object-cover`}
+                  />
+                  <span className="whitespace-nowrap text-center text-[20px] font-bold leading-[1.5] text-white">
+                    {skill.name}
+                  </span>
+                </div>
+                {index < loopedSkills.length - 1 && (
+                  <img
+                    src={skillSeparator}
+                    alt=""
+                    className="theme-white-icon h-[100px] w-[100px] shrink-0"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          data-scroll-reveal
+          className="relative isolate flex min-h-[702px] flex-col items-center gap-[50px] overflow-hidden px-[50px] py-[50px] max-lg:px-6 max-sm:px-4"
+        >
+          <div
+            aria-hidden="true"
+            data-reveal-static
+            className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+          >
+            <CursorGrid
+              cellSize={50}
+              color={theme === "light" ? "#7C3AED" : "#892CDC"}
+              radius={100}
+              falloff="smooth"
+              holdTime={350}
+              fadeDuration={600}
+              lineWidth={1.5}
+              maxOpacity={1}
+              fillOpacity={0}
+              gridOpacity={0}
+              cellRadius={0}
+              clickPulse
+              pulseSpeed={600}
+            />
+          </div>
+
+          <div className="relative z-10">
+            <SectionTitle>Experience</SectionTitle>
+          </div>
+          <div className="relative z-10 flex w-full max-w-[980px] flex-col items-start">
+            {experiences.map((experience, index) => {
+              const isActive = index <= activeExperienceIndex;
+              const activeDot = theme === "light" ? timelineActiveLight : timelineActive;
+              const inactiveLine =
+                index === experiences.length - 1 ? timelineLineEnd : timelineLineMiddle;
 
               return (
                 <div
-                  key={project.id}
-                  data-category={project.category}
-                  className="h-[225px] w-full max-w-[400px] md:w-[400px] max-[650px]:h-[200px] max-[650px]:max-w-[320px]"
+                  key={experience.title}
+                  ref={(node) => {
+                    experienceRowsRef.current[index] = node;
+                  }}
+                  className="flex w-full items-stretch gap-[50px] max-sm:gap-5"
                 >
-                  {project.link ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block h-full w-full"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    content
-                  )}
+                  <div className="flex w-[30px] shrink-0 flex-col items-center">
+                    <div className="relative h-[30px] w-[30px] shrink-0">
+                      <img
+                        src={timelineEmpty}
+                        alt=""
+                        className={`theme-white-icon absolute inset-0 h-[30px] w-[30px] transition-opacity duration-1000 ${
+                          isActive ? "opacity-0" : "opacity-100"
+                        }`}
+                      />
+                      <img
+                        src={activeDot}
+                        alt=""
+                        className={`absolute inset-0 h-[30px] w-[30px] transition-opacity duration-1000 ${
+                          isActive ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                    </div>
+                    <div className="relative min-h-[90px] w-px flex-1">
+                      <img
+                        src={inactiveLine}
+                        alt=""
+                        className={`theme-white-icon absolute inset-0 h-full w-px transition-opacity delay-[1000ms] duration-700 ${
+                          isActive ? "opacity-0" : "opacity-100"
+                        }`}
+                      />
+                      <img
+                        src={timelineLineActive}
+                        alt=""
+                        className={`absolute inset-0 h-full w-px transition-opacity delay-[1000ms] duration-700 ${
+                          isActive ? "opacity-100" : "opacity-0"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-[800px] max-w-full pb-[10px] pt-[10px] text-white">
+                    <h3 className="text-[19px] font-semibold leading-[1.5]">
+                      {experience.title}
+                    </h3>
+                    <p className="mt-[10px] text-[13px] leading-[1.5]">{experience.year}</p>
+                    <p className="mt-[10px] text-justify text-[15px] leading-[1.53]">
+                      {experience.description}
+                    </p>
+                  </div>
                 </div>
               );
             })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        id="contact"
-        ref={contactRef}
-        className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-6 py-12 max-[650px]:px-4 max-[650px]:py-8"
-      >
-        <h2 className="text-[30px] font-bold text-white max-[650px]:text-[24px]">
-          Contact
-        </h2>
-        <img
-          src={imgFrame27}
-          alt=""
-          className="h-[20px] w-[150px] max-[650px]:h-[16px] max-[650px]:w-[120px]"
-        />
-        <form
-          onSubmit={handleContactSubmit}
-          className="flex w-full max-w-2xl flex-col gap-4 rounded-3xl border border-border bg-card p-6 max-[650px]:p-4"
+        <section
+          id="project"
+          ref={sectionRefs.project}
+          data-scroll-reveal
+          className="flex min-h-[1245px] flex-col items-center gap-[10px] px-[50px] py-[50px] max-lg:px-6 max-sm:px-4"
         >
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2 text-[14px] text-white/80">
-              Nama
-              <input
-                name="name"
-                type="text"
-                required
-                className="w-full rounded-xl border border-border bg-input px-4 py-3 text-[15px] text-white outline-none transition focus:border-accentSoft max-[650px]:text-[14px]"
-                placeholder="Nama lengkap"
-              />
-            </label>
-            <label className="flex flex-col gap-2 text-[14px] text-white/80">
-              Email
-              <input
-                name="email"
-                type="email"
-                required
-                className="w-full rounded-xl border border-border bg-input px-4 py-3 text-[15px] text-white outline-none transition focus:border-accentSoft max-[650px]:text-[14px]"
-                placeholder="email@domain.com"
-              />
-            </label>
+          <SectionTitle imageUnderline>Project</SectionTitle>
+          <div className="flex w-full flex-wrap items-center gap-[25px] py-[15px]">
+            {projectFilters.map((filter) => {
+              const active = activeFilter === filter.id;
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={`project-filter-button cursor-target flex items-center gap-[15px] rounded-md border px-2 py-1 text-[20px] font-bold transition-all duration-300 ${
+                    active ? "project-filter-button--active" : "border-transparent"
+                  }`}
+                  aria-pressed={active}
+                  aria-controls="project-grid"
+                >
+                  <span className="relative h-[20px] w-[20px] shrink-0" aria-hidden="true">
+                    <img
+                      src={projectDot}
+                      alt=""
+                      className={`theme-white-icon absolute inset-0 h-[20px] w-[20px] transition-all duration-300 ${
+                        active ? "scale-75 opacity-0" : "scale-100 opacity-100"
+                      }`}
+                    />
+                    <span
+                      className={`project-filter-active-dot absolute inset-0 rounded-full transition-all duration-300 ${
+                        active ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                      }`}
+                    />
+                  </span>
+                  {filter.label}
+                </button>
+              );
+            })}
           </div>
-          <label className="flex flex-col gap-2 text-[14px] text-white/80">
-            No Telepon
-            <input
-              name="phone"
-              type="tel"
-              className="w-full rounded-xl border border-border bg-input px-4 py-3 text-[15px] text-white outline-none transition focus:border-accentSoft max-[650px]:text-[14px]"
-              placeholder="08xxxxxxxxxx"
-            />
-          </label>
-          <label className="flex flex-col gap-2 text-[14px] text-white/80">
-            Pesan
-            <textarea
-              name="message"
-              rows={5}
-              required
-              className="w-full rounded-xl border border-border bg-input px-4 py-3 text-[15px] text-white outline-none transition focus:border-accentSoft max-[650px]:text-[14px]"
-              placeholder="Tulis pesan kamu..."
-            />
-          </label>
-          <button
-            type="submit"
-            className="mt-2 rounded-2xl bg-accent px-6 py-3 text-[15px] font-semibold text-white transition hover:brightness-110 max-[650px]:text-[14px]"
+          <div
+            key={activeFilter}
+            id="project-grid"
+            className="project-filter-results grid w-full grid-cols-1 items-start gap-[50px] md:grid-cols-2 xl:grid-cols-3"
           >
-            Kirim Pesan
-          </button>
-          <p className="text-[12px] text-white/60">
-            Setelah submit, kamu akan diarahkan ke email untuk mengirim
-            pesan ke yudhajtz@gmail.com.
-          </p>
-        </form>
-      </section>
+            {visibleProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        </section>
 
-      <footer className="border-t border-border py-6 max-[650px]:px-4">
-        <p className="text-center text-[14px] text-white max-[650px]:text-[12px]">
-          Copyright &copy; By Yudha W. D || All right reserved.
+        <section
+          id="contact"
+          ref={sectionRefs.contact}
+          data-scroll-reveal
+          className="flex min-h-[955px] flex-col items-center gap-[30px] py-[50px] max-lg:px-6 max-sm:px-4"
+        >
+          <SectionTitle imageUnderline>Contact</SectionTitle>
+          <form
+            onSubmit={handleContactSubmit}
+            className="figma-card flex h-[750px] w-full max-w-[1148px] flex-col justify-center gap-[35px] overflow-hidden rounded-[20px] border border-[#696969] p-[20px] transition-colors duration-200 focus-within:border-[#892cdc] max-md:h-auto max-md:py-10"
+          >
+            <div className="grid grid-cols-2 gap-[50px] max-md:grid-cols-1 max-md:gap-[35px]">
+              <label className="flex flex-col gap-[10px] text-[15px] font-bold">
+                Nama
+                <input
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Nama Lengkap"
+                  className="figma-input h-[52px] rounded-[10px] border border-[#696969] p-[15px] text-[13px] font-normal text-white outline-none transition-colors duration-200 placeholder:text-white focus:border-[#892cdc]"
+                />
+              </label>
+              <label className="flex flex-col gap-[10px] text-[15px] font-bold">
+                Email
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Email@gmail.com"
+                  className="figma-input h-[52px] rounded-[10px] border border-[#696969] p-[15px] text-[13px] font-normal text-white outline-none transition-colors duration-200 placeholder:text-white focus:border-[#892cdc]"
+                />
+              </label>
+            </div>
+            <label className="flex flex-col gap-[10px] text-[15px] font-bold">
+              No Telepom
+              <input
+                name="phone"
+                type="tel"
+                placeholder="08222XXXXXXX"
+                className="figma-input h-[52px] rounded-[10px] border border-[#696969] p-[15px] text-[13px] font-normal text-white outline-none transition-colors duration-200 placeholder:text-white focus:border-[#892cdc]"
+              />
+            </label>
+            <label className="flex flex-col gap-[10px] text-[15px] font-bold">
+              Pesan
+              <textarea
+                name="message"
+                required
+                placeholder="Tulis Pesan Kamu..."
+                className="figma-input h-[172px] resize-none rounded-[10px] border border-[#696969] p-[15px] text-[13px] font-normal text-white outline-none transition-colors duration-200 placeholder:text-white focus:border-[#892cdc]"
+              />
+            </label>
+            <button
+              type="submit"
+              className="cursor-target w-full rounded-[30px] bg-[#892cdc] px-[10px] py-[15px] text-[20px] font-semibold text-white transition hover:bg-[#9c3ee7]"
+            >
+              Kirim Pesan
+            </button>
+            <p className="text-center text-[20px] leading-[1.5] text-white max-sm:text-[15px]">
+              Setelah submit, kamu akan diarahkan ke email untuk mengirim pesan.
+            </p>
+          </form>
+        </section>
+      </main>
+
+      <footer className="mx-auto flex min-h-[130px] w-full max-w-[1512px] items-center justify-center px-4 py-[50px]">
+        <p className="text-center text-[20px] font-semibold leading-[1.5] text-white max-sm:text-[14px]">
+          © 2026 Yudha Wira Dharma. All rights reserved
         </p>
       </footer>
+
+      <button
+        type="button"
+        onClick={() => scrollTo("home")}
+        className="cursor-target fixed bottom-[38px] right-[69px] z-40 flex h-[70px] items-center justify-center gap-[8px] rounded-[25px] bg-[#892cdc] p-[20px] text-[20px] font-bold text-[#fff] shadow-lg max-sm:bottom-5 max-sm:right-5 max-sm:h-[56px] max-sm:p-3 max-sm:text-[16px]"
+        aria-label="Kembali ke atas"
+      >
+        <span className="flex h-[30px] w-[30px] items-center justify-center">
+          <img src={arrowUp} alt="" className="h-[18px] w-[15px]" />
+        </span>
+        Top
+      </button>
     </div>
   );
 }
