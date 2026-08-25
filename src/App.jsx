@@ -437,19 +437,19 @@ export default function App() {
           <div aria-hidden="true" data-reveal-static className="absolute inset-0 z-0">
             <GradientWaves
               horizonColor="#892CDC"
-              waveColor="#52057B"
+              waveColor="#000000"
               crestColor="#ffffff"
-              speed={0.4}
-              amplitude={2.5}
+              speed={0.3}
+              amplitude={3}
               waveScale={0.6}
-              waveRatio={0.9}
+              waveRatio={1}
               swell={35}
               turbulence={20}
               tilt={1.11}
-              zoom={1}
-              height={5.5}
+              zoom={0.8}
+              height={5}
               fogDepth={15}
-              detail="medium"
+              detail="high"
               brightness={1}
               opacity={1}
               mouseInteraction
