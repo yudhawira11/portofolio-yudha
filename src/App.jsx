@@ -117,6 +117,7 @@ const projects = [
     title: "SEO consultant",
     tag: "SEO",
     tagClass: "border-blue-600 bg-[#f2f2ff]",
+    href: "https://fulldayproject.com/",
     description:
       "Optimized FullDay Project’s SEO through technical analysis, keyword optimization, content improvement, and performance monitoring using Google Search Console.",
   },
@@ -128,6 +129,7 @@ const projects = [
     title: "UI/UX Designer",
     tag: "UI/UX Design",
     tagClass: "border-green-700 bg-[#f2f9f2]",
+    href: "https://geoffmax-mobile.vercel.app/",
     description:
       "Redesigned the Geoffmax website for a mobile-friendly experience, improving layout, navigation, and product presentation to make browsing more intuitive and responsive across devices.",
   },
