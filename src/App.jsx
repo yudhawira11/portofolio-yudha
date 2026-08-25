@@ -437,7 +437,7 @@ export default function App() {
           <div aria-hidden="true" data-reveal-static className="absolute inset-0 z-0">
             <GradientWaves
               horizonColor="#892CDC"
-              waveColor="#000000"
+              waveColor="#892CDC"
               crestColor="#ffffff"
               speed={0.3}
               amplitude={3}
