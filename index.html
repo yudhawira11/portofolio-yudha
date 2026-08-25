@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        if (window.localStorage.getItem("theme") === "light") {
+          document.documentElement.classList.add("theme-light");
+        }
+      } catch (error) {
+        // Tetap gunakan tema default jika penyimpanan browser tidak tersedia.
+      }
+    </script>
     <title>Portfolio Yudha W. D.</title>
   </head>
   <body class="bg-page text-white">

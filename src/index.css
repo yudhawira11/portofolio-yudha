@@ -17,6 +17,7 @@
   --accent-soft: 188 111 241;
   --accent-blue: 71 181 255;
   --accent-light: 165 129 239;
+  --header-height: 123px;
 }
 
 html.theme-light {
@@ -80,6 +81,11 @@ img {
   user-select: none;
 }
 
+.home-viewport-section {
+  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100dvh - var(--header-height));
+}
+
 ::selection {
   background: rgb(var(--accent) / 0.7);
   color: white;
@@ -103,6 +109,20 @@ img {
     rgb(var(--page) / 0.78) 0%,
     rgb(var(--page) / 0.48) 52%,
     rgb(var(--page) / 0.28) 100%
+  );
+}
+
+html.theme-light .home-gradient-waves {
+  filter: saturate(1.25) contrast(1.1);
+}
+
+html.theme-light .home-waves-overlay {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--page) / 0.7) 0%,
+    rgb(var(--page) / 0.36) 42%,
+    rgb(var(--page) / 0.08) 68%,
+    transparent 100%
   );
 }
 

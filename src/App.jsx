@@ -254,6 +254,27 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return undefined;
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${header.getBoundingClientRect().height}px`
+      );
+    };
+
+    updateHeaderHeight();
+    const resizeObserver = new ResizeObserver(updateHeaderHeight);
+    resizeObserver.observe(header);
+
+    return () => {
+      resizeObserver.disconnect();
+      document.documentElement.style.removeProperty("--header-height");
+    };
+  }, []);
+
+  useEffect(() => {
     const sections = Array.from(document.querySelectorAll("[data-scroll-reveal]"));
     const reveal = (section) => section.classList.add("is-revealed");
     const prefersReducedMotion = window.matchMedia(
@@ -418,7 +439,7 @@ export default function App() {
                   scrollTo(item.id);
                 }}
                 aria-current={activeNav === item.id ? "page" : undefined}
-                className={`cursor-target flex w-[150px] shrink-0 items-center justify-center rounded-[20px] bg-page p-[20px] text-center text-[15px] font-bold transition-colors max-lg:w-auto max-lg:min-w-[105px] max-lg:px-5 max-lg:py-3 ${
+                className={`cursor-target flex w-[150px] shrink-0 items-center justify-center rounded-[20px] bg-transparent p-[20px] text-center text-[15px] font-bold transition-colors max-lg:w-auto max-lg:min-w-[105px] max-lg:px-5 max-lg:py-3 ${
                   activeNav === item.id ? "text-[#bc6ff1]" : "text-white"
                 }`}
               >
@@ -434,7 +455,7 @@ export default function App() {
           id="home"
           ref={sectionRefs.home}
           data-scroll-reveal
-          className="relative isolate flex min-h-[474px] w-full items-center gap-[50px] overflow-hidden px-[50px] py-[50px] max-lg:flex-col max-lg:px-6 max-sm:px-4"
+          className="home-viewport-section relative isolate flex w-full items-center gap-[50px] overflow-hidden px-[50px] py-[50px] max-lg:flex-col max-lg:px-6 max-sm:px-4"
         >
           <div aria-hidden="true" data-reveal-static className="absolute inset-0 z-0">
             <GradientWaves
@@ -458,6 +479,7 @@ export default function App() {
               parallaxStrength={0.5}
               grain
               grainIntensity={0.05}
+              className="home-gradient-waves"
             />
           </div>
           <div
