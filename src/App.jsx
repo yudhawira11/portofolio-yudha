@@ -217,6 +217,7 @@ export default function App() {
     home: useRef(null),
     about: useRef(null),
     skill: useRef(null),
+    experience: useRef(null),
     project: useRef(null),
     contact: useRef(null),
   };
@@ -232,6 +233,7 @@ export default function App() {
     { id: "home", label: "Home" },
     { id: "about", label: "About" },
     { id: "skill", label: "Skill" },
+    { id: "experience", label: "Experience" },
     { id: "project", label: "Project" },
     { id: "contact", label: "Contact" },
   ];
@@ -404,7 +406,7 @@ export default function App() {
             </span>
           </button>
 
-          <nav className="skill-scroll flex max-w-full items-center justify-end gap-[50px] overflow-x-auto max-lg:w-full max-lg:justify-start max-lg:gap-3">
+          <nav className="skill-scroll flex min-w-0 flex-1 items-center justify-end gap-[50px] overflow-x-auto max-lg:w-full max-lg:justify-start max-lg:gap-3">
             {navItems.map((item) => (
               <a
                 key={item.id}
@@ -642,6 +644,8 @@ export default function App() {
         </section>
 
         <section
+          id="experience"
+          ref={sectionRefs.experience}
           data-scroll-reveal
           className="relative isolate flex min-h-[702px] flex-col items-center gap-[50px] overflow-hidden px-[50px] py-[50px] max-lg:px-6 max-sm:px-4"
         >
@@ -755,11 +759,11 @@ export default function App() {
                   aria-pressed={active}
                   aria-controls="project-grid"
                 >
-                  <span className="relative h-[20px] w-[20px] shrink-0" aria-hidden="true">
+                  <span className="relative h-[10px] w-[10px] shrink-0" aria-hidden="true">
                     <img
                       src={projectDot}
                       alt=""
-                      className={`theme-white-icon absolute inset-0 h-[20px] w-[20px] transition-all duration-300 ${
+                      className={`theme-white-icon absolute inset-0 h-[10px] w-[10px] transition-all duration-300 ${
                         active ? "scale-75 opacity-0" : "scale-100 opacity-100"
                       }`}
                     />
